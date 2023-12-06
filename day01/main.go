@@ -6,8 +6,19 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 	"unicode"
 )
+
+func changeWordToDigit(line string, wordsAndIntegersMap map[string]string) string {
+	processedString := line
+
+	for key, value := range wordsAndIntegersMap {
+		processedString = strings.Replace(processedString, key, value, -1)
+	}
+
+	return processedString
+}
 
 func getCalibrationValueFromString(line string) int {
 
@@ -39,6 +50,17 @@ func main() {
 
 	filePath := "input.txt"
 	totalSum := 0
+	wordsAndIntegersMap := map[string]string{
+		"one":   "o1e",
+		"two":   "t2o",
+		"three": "t3e",
+		"four":  "f4r",
+		"five":  "f5e",
+		"six":   "s6x",
+		"seven": "s7n",
+		"eight": "e8t",
+		"nine":  "n9e",
+	}
 
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -50,6 +72,7 @@ func main() {
 
 	for scanner.Scan() {
 		line := scanner.Text()
+		line = changeWordToDigit(line, wordsAndIntegersMap)
 		totalSum += getCalibrationValueFromString(line)
 	}
 
